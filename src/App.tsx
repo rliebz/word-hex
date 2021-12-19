@@ -76,7 +76,7 @@ const tiers = [
   { title: "Beginner", score: 0 }
 ];
 
-const storageKey = `${centerLetter}:${letters.sort().join("")}:found`;
+const storageKey = `${centerLetter}:${[...letters].sort().join("")}:found`;
 
 const App = function App() {
   const loadedData = JSON.parse(localStorage.getItem(storageKey) || "null");
