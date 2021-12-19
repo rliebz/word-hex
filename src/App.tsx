@@ -89,32 +89,34 @@ const App = function App() {
   const submit = (word: string) => {
     setAttempt("");
 
+    const throwError = (message: string) => toast(message, { type: "error" });
+
     if (word.length < 4) {
-      toast("Too short");
+      throwError("Too short");
       return;
     }
 
     if (!word.includes(centerLetter)) {
-      toast("Missing center letter");
+      throwError("Missing center letter");
       return;
     }
 
     if (found.includes(word)) {
-      toast("Already found");
+      throwError("Already found");
       return;
     }
 
     if ([...word].some(letter => !letters.includes(letter))) {
-      toast("Bad letters");
+      throwError("Bad letters");
       return;
     }
 
     if (!dictionary.includes(word)) {
-      toast("Not a word");
+      throwError("Not a word");
       return;
     }
 
-    toast(`+${scoreWord(word)}!`);
+    toast(`+${scoreWord(word)}!`, { type: "success" });
 
     const newlyFound = [...found, word];
     setFound(newlyFound);
@@ -161,6 +163,7 @@ const App = function App() {
 
   return (
     <div className="main">
+      <h1>Word Hex</h1>
       <div className="attempt">
         {[...attempt].map(letter => (
           <span
@@ -203,7 +206,7 @@ const App = function App() {
       </div>
 
       <div>
-        Score: {score} ({title})
+        Score: {score} ({title}!)
       </div>
 
       <div className="info-group">
@@ -228,7 +231,7 @@ const App = function App() {
           </ul>
         </div>
       </div>
-      <ToastContainer position="top-left" />
+      <ToastContainer autoClose={2000} position="top-left" />
     </div>
   );
 };

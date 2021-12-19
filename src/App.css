@@ -11,6 +11,10 @@
   --lowlight-color: #aaa;
 }
 
+.main h1 {
+  border-bottom: 2px solid var(--highlight-color);
+}
+
 .attempt {
   font-size: 32px;
   font-weight: bolder;
