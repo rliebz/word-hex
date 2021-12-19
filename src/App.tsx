@@ -76,8 +76,11 @@ const tiers = [
   { title: "Beginner", score: 0 }
 ];
 
+const storageKey = `${centerLetter}:${letters.sort().join("")}:found`;
+
 const App = function App() {
-  const [found, setFound] = useState<string[]>([]);
+  const loadedData = JSON.parse(localStorage.getItem(storageKey) || "null");
+  const [found, setFound] = useState<string[]>(loadedData || []);
   const [attempt, setAttempt] = useState("");
 
   const backspace = (word: string) =>
@@ -113,7 +116,9 @@ const App = function App() {
 
     toast(`+${scoreWord(word)}!`);
 
-    setFound([...found, word]);
+    const newlyFound = [...found, word];
+    setFound(newlyFound);
+    localStorage.setItem(storageKey, JSON.stringify(newlyFound));
   };
 
   useEffect(
@@ -217,7 +222,7 @@ const App = function App() {
 
         <div>
           <ul>
-            {found.map(word => (
+            {[...found].sort().map(word => (
               <li key={word}>{word}</li>
             ))}
           </ul>
