@@ -46,6 +46,7 @@
 .hex-grid button {
   background-color: var(--hex-color);
   border: none;
+  color: #000;
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
   font-size: 32px;
   font-weight: bolder;
