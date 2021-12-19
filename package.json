@@ -1,9 +1,11 @@
 {
   "name": "word-hex",
   "version": "0.0.0",
+  "homepage": "https://rliebz.github.io/word-hex",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "deploy": "./deploy.sh",
     "test": "jest",
     "serve": "vite preview"
   },
