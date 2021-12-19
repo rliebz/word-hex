@@ -8,6 +8,7 @@
   --hex-margin: 4px;
   --hex-color: #ddd;
   --highlight-color: #fc0;
+  --lowlight-color: #aaa;
 }
 
 .attempt {
@@ -19,6 +20,10 @@
 
 .center-letter {
   color: var(--highlight-color);
+}
+
+.bad-letter {
+  color: var(--lowlight-color);
 }
 
 .blinker {

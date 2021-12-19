@@ -28,6 +28,7 @@ module.exports = {
       "error",
       { devDependencies: ["**/*.test.ts", "**/*.test.tsx"] }
     ],
+    "no-nested-ternary": "off",
     "no-restricted-syntax": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [2, { extensions: [".jsx", ".tsx"] }]

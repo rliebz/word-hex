@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -40,10 +40,8 @@ const allWords = dictionary.filter(word => {
     return false;
   }
 
-  for (let i = 0; i < word.length; i += 1) {
-    if (!letters.includes(word[i])) {
-      return false;
-    }
+  if ([...word].some(letter => !letters.includes(letter))) {
+    return false;
   }
 
   return true;
@@ -82,39 +80,75 @@ const App = function App() {
   const [found, setFound] = useState<string[]>([]);
   const [attempt, setAttempt] = useState("");
 
-  const submit = () => {
+  const backspace = (word: string) =>
+    setAttempt(word.slice(0, word.length - 1));
+
+  const submit = (word: string) => {
     setAttempt("");
 
-    if (attempt.length < 4) {
+    if (word.length < 4) {
       toast("Too short");
       return;
     }
 
-    if (!attempt.includes(centerLetter)) {
+    if (!word.includes(centerLetter)) {
       toast("Missing center letter");
       return;
     }
 
-    if (!dictionary.includes(attempt)) {
-      toast("Not a word");
-      return;
-    }
-
-    if (found.includes(attempt)) {
+    if (found.includes(word)) {
       toast("Already found");
       return;
     }
 
-    toast(`+${scoreWord(attempt)}!`);
+    if ([...word].some(letter => !letters.includes(letter))) {
+      toast("Bad letters");
+      return;
+    }
 
-    setFound([...found, attempt]);
+    if (!dictionary.includes(word)) {
+      toast("Not a word");
+      return;
+    }
+
+    toast(`+${scoreWord(word)}!`);
+
+    setFound([...found, word]);
   };
+
+  useEffect(
+    () => {
+      const handleKeydown = (event: KeyboardEvent) => {
+        if (event.metaKey || event.altKey || event.shiftKey || event.ctrlKey) {
+          return;
+        }
+
+        event.preventDefault();
+
+        if (event.key === "Enter") {
+          submit(attempt);
+          return;
+        }
+
+        if (event.key === "Backspace") {
+          backspace(attempt);
+          return;
+        }
+
+        setAttempt(attempt + event.key);
+      };
+
+      document.addEventListener("keydown", handleKeydown);
+      return () => document.removeEventListener("keydown", handleKeydown);
+    },
+    [attempt]
+  );
 
   const score = scoreWords(found);
 
   let title = "Beginner";
   for (const tier of tiers) {
-    if (score > tier.score) {
+    if (score >= tier.score) {
       title = tier.title;
       break;
     }
@@ -123,13 +157,20 @@ const App = function App() {
   return (
     <div className="main">
       <div className="attempt">
-        {[...attempt].map(letter =>
-          letter === centerLetter ? (
-            <span className="center-letter">{letter}</span>
-          ) : (
-            letter
-          )
-        )}
+        {[...attempt].map(letter => (
+          <span
+            key={letter}
+            className={
+              letter === centerLetter
+                ? "center-letter"
+                : !letters.includes(letter)
+                ? "bad-letter"
+                : undefined
+            }
+          >
+            {letter}
+          </span>
+        ))}
         <span className="blinker">|</span>
       </div>
 
@@ -148,13 +189,10 @@ const App = function App() {
         <button type="button" onClick={() => setAttempt("")}>
           Clear
         </button>
-        <button
-          type="button"
-          onClick={() => setAttempt(attempt.slice(0, attempt.length - 1))}
-        >
+        <button type="button" onClick={() => backspace(attempt)}>
           Delete
         </button>
-        <button type="button" onClick={submit}>
+        <button type="button" onClick={() => submit(attempt)}>
           Enter
         </button>
       </div>
