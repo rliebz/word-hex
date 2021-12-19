@@ -11,7 +11,18 @@ const allPangrams = dictionary.filter(
   word => new Set(word).size === 7 && !word.includes("s")
 );
 
-const shuffle = <T extends any>(list: T[]): T[] => list.sort(() => rng() - 0.5);
+const shuffle = <T extends any>(list: T[]): T[] => {
+  const output = [...list];
+
+  for (let i = output.length - 1; i >= 0; i -= 1) {
+    const j = Math.floor(rng() * output.length);
+    const temp = output[i];
+    output[i] = output[j];
+    output[j] = temp;
+  }
+
+  return output;
+};
 
 const letters = shuffle([
   ...new Set(allPangrams[Math.floor(rng() * allPangrams.length)])
