@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import dictionary from "./dictionary";
+import "./App.css";
 
 const rng = seedrandom(new Date().toLocaleDateString("en-US"));
 
@@ -28,12 +29,14 @@ const letters = shuffle([
   ...new Set(allPangrams[Math.floor(rng() * allPangrams.length)])
 ]);
 
+const centerLetter = letters[3];
+
 const allWords = dictionary.filter(word => {
   if (word.length < 4) {
     return false;
   }
 
-  if (!word.includes(letters[0])) {
+  if (!word.includes(centerLetter)) {
     return false;
   }
 
@@ -87,7 +90,7 @@ const App = function App() {
       return;
     }
 
-    if (!attempt.includes(letters[0])) {
+    if (!attempt.includes(centerLetter)) {
       toast("Missing center letter");
       return;
     }
@@ -118,28 +121,37 @@ const App = function App() {
   }
 
   return (
-    <>
-      {letters.map(letter => (
-        <button
-          type="button"
-          key={letter}
-          onClick={() => setAttempt(attempt + letter)}
-        >
-          {letter}
-        </button>
-      ))}
-      <div>Chosen: {attempt}</div>
-      <button type="button" onClick={submit}>
-        Enter
-      </button>
+    <div className="main">
+      <div className="attempt">
+        {[...attempt].map(letter =>
+          letter === centerLetter ? (
+            <span className="center-letter">{letter}</span>
+          ) : (
+            letter
+          )
+        )}
+        <span className="blinker">|</span>
+      </div>
+
+      <div className="hex-grid">
+        {letters.map(letter => (
+          <button
+            type="button"
+            key={letter}
+            onClick={() => setAttempt(attempt + letter)}
+          >
+            {letter}
+          </button>
+        ))}
+      </div>
       <button
         type="button"
         onClick={() => setAttempt(attempt.slice(0, attempt.length - 1))}
       >
         Delete
       </button>
-      <button type="button" onClick={() => setAttempt("")}>
-        Clear
+      <button type="button" onClick={submit}>
+        Enter
       </button>
 
       <div>
@@ -153,7 +165,7 @@ const App = function App() {
         ))}
       </ul>
       <ToastContainer position="bottom-center" />
-    </>
+    </div>
   );
 };
 

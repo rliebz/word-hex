@@ -1,0 +1,58 @@
+.main {
+  font-family: "Trebuchet MS", sans-serif;
+
+  --hex-size: 100px;
+  --hex-margin: 4px;
+  --hex-color: #ddd;
+  --highlight-color: #fc0;
+}
+
+.attempt {
+  font-size: 32px;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.center-letter {
+  color: var(--highlight-color);
+}
+
+.blinker {
+  font-size: 32px;
+  color: var(--highlight-color);
+  animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hex-grid {
+  height: calc(var(--hex-size) * 3 + var(--hex-margin) * 4);
+  width: calc(var(--hex-size) * 3 + var(--hex-margin) * 6);
+}
+
+.hex-grid button {
+  background-color: var(--hex-color);
+  border: none;
+  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+  display: inline-block;
+  font-size: 32px;
+  font-weight: bolder;
+  height: calc(var(--hex-size) * 1.1547);
+  margin: var(--hex-margin);
+  margin-bottom: calc(var(--hex-margin) - var(--hex-size) * 0.2885);
+  width: var(--hex-size);
+  text-transform: uppercase;
+}
+
+.hex-grid button:nth-child(1),
+.hex-grid button:nth-child(6) {
+  margin-left: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
+}
+
+.hex-grid button:nth-child(4) {
+  background-color: var(--highlight-color);
+}
