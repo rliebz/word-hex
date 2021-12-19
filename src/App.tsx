@@ -144,15 +144,20 @@ const App = function App() {
           </button>
         ))}
       </div>
-      <button
-        type="button"
-        onClick={() => setAttempt(attempt.slice(0, attempt.length - 1))}
-      >
-        Delete
-      </button>
-      <button type="button" onClick={submit}>
-        Enter
-      </button>
+      <div className="button-group">
+        <button type="button" onClick={() => setAttempt("")}>
+          Clear
+        </button>
+        <button
+          type="button"
+          onClick={() => setAttempt(attempt.slice(0, attempt.length - 1))}
+        >
+          Delete
+        </button>
+        <button type="button" onClick={submit}>
+          Enter
+        </button>
+      </div>
 
       <div>
         Score: {score} ({title})

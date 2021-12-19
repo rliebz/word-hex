@@ -1,5 +1,8 @@
 .main {
   font-family: "Trebuchet MS", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   --hex-size: 100px;
   --hex-margin: 4px;
@@ -10,6 +13,7 @@
 .attempt {
   font-size: 32px;
   font-weight: bolder;
+  margin-bottom: 16px;
   text-transform: uppercase;
 }
 
@@ -38,7 +42,6 @@
   background-color: var(--hex-color);
   border: none;
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-  display: inline-block;
   font-size: 32px;
   font-weight: bolder;
   height: calc(var(--hex-size) * 1.1547);
@@ -52,7 +55,20 @@
 .hex-grid button:nth-child(6) {
   margin-left: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
 }
+.hex-grid button:nth-child(2),
+.hex-grid button:nth-child(7) {
+  margin-right: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
+}
 
 .hex-grid button:nth-child(4) {
   background-color: var(--highlight-color);
+}
+
+.button-group button {
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-radius: 25px;
+  font-size: 18px;
+  margin: 8px;
+  padding: 12px 18px;
 }
