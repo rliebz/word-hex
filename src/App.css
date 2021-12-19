@@ -77,3 +77,12 @@
   margin: 8px;
   padding: 12px 18px;
 }
+
+.info-group {
+  display: flex;
+  text-align: left;
+}
+
+.achieved {
+  color: var(--highlight-color);
+}

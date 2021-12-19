@@ -201,13 +201,29 @@ const App = function App() {
         Score: {score} ({title})
       </div>
 
-      <div>Found:</div>
-      <ul>
-        {found.map(word => (
-          <li key={word}>{word}</li>
-        ))}
-      </ul>
-      <ToastContainer position="bottom-center" />
+      <div className="info-group">
+        <div>
+          <ul>
+            {[...tiers].reverse().map(tier => (
+              <li
+                key={tier.title}
+                className={score >= tier.score ? "achieved" : undefined}
+              >
+                {tier.title} ({tier.score})
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <ul>
+            {found.map(word => (
+              <li key={word}>{word}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <ToastContainer position="top-left" />
     </div>
   );
 };
