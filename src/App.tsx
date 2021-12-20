@@ -103,7 +103,10 @@ const App = function App() {
       return;
     }
 
-    toast(`+${scoreWord(word)}!`, { type: "success" });
+    toast(
+      `${new Set(word).size === 7 ? "Pangram! " : ""}+${scoreWord(word)}!`,
+      { type: "success" }
+    );
 
     const newlyFound = [...found, word];
     setFound(newlyFound);
