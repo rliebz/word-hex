@@ -28,6 +28,7 @@ module.exports = {
       "error",
       { devDependencies: ["**/*.test.ts", "**/*.test.tsx"] }
     ],
+    "no-continue": "off",
     "no-nested-ternary": "off",
     "no-restricted-syntax": "off",
     "react/react-in-jsx-scope": "off",

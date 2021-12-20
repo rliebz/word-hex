@@ -1,32 +1,19 @@
-import seedrandom from "seedrandom";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import dictionary from "./dictionary";
+import Randomizer from "./random";
 import "./App.css";
 
-const rng = seedrandom(new Date().toLocaleDateString("en-US"));
+const randomizer = new Randomizer();
 
 const allPangrams = dictionary.filter(
   word => new Set(word).size === 7 && !word.includes("s")
 );
 
-const shuffle = <T extends any>(list: T[]): T[] => {
-  const output = [...list];
-
-  for (let i = output.length - 1; i >= 0; i -= 1) {
-    const j = Math.floor(rng() * output.length);
-    const temp = output[i];
-    output[i] = output[j];
-    output[j] = temp;
-  }
-
-  return output;
-};
-
-const letters = shuffle([
-  ...new Set(allPangrams[Math.floor(rng() * allPangrams.length)])
+const letters = randomizer.shuffle([
+  ...new Set(randomizer.chooseFrom(allPangrams))
 ]);
 
 const centerLetter = letters[3];
