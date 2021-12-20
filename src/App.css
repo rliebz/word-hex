@@ -89,5 +89,9 @@
 }
 
 .achieved {
-  color: var(--highlight-color);
+  font-weight: bold;
+}
+
+.unachieved {
+  color: var(--lowlight-color);
 }

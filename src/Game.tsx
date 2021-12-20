@@ -208,7 +208,7 @@ const Game = function Game({ pangram, randomizer }: GameProps) {
             {[...tiers].reverse().map(tier => (
               <li
                 key={tier.title}
-                className={score >= tier.score ? "achieved" : undefined}
+                className={score >= tier.score ? "achieved" : "unachieved"}
               >
                 {tier.title} ({tier.score})
               </li>
