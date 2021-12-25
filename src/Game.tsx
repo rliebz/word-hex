@@ -21,13 +21,14 @@ const scoreWords = (words: string[]): number =>
   words.map(word => scoreWord(word)).reduce((a, b) => a + b, 0);
 
 interface GameProps {
-  pangram: string;
-  randomizer: Randomizer;
+  centerLetter: string;
+  letters: string[];
 }
 
-const Game = function Game({ pangram, randomizer }: GameProps) {
-  const [letters, setLetters] = useState(randomizer.shuffle(new Set(pangram)));
-  const centerLetter = letters[3];
+const Game = function Game({ letters, centerLetter }: GameProps) {
+  const [seed, setSeed] = useState(new Date().toLocaleString("en-US"));
+  const randomizer = new Randomizer(seed);
+  const orderedLetters = randomizer.shuffleAround(letters, centerLetter);
 
   const storageKey = `${centerLetter}:${[...letters].sort().join("")}:found`;
 
@@ -168,7 +169,7 @@ const Game = function Game({ pangram, randomizer }: GameProps) {
       </div>
 
       <div className="hex-grid">
-        {letters.map(letter => (
+        {orderedLetters.map(letter => (
           <button
             type="button"
             key={letter}
@@ -179,12 +180,7 @@ const Game = function Game({ pangram, randomizer }: GameProps) {
         ))}
       </div>
       <div className="button-group">
-        <button
-          type="button"
-          onClick={() =>
-            setLetters(randomizer.shuffleAround(letters, centerLetter))
-          }
-        >
+        <button type="button" onClick={() => setSeed(Math.random().toString())}>
           Shuffle
         </button>
         <button type="button" onClick={() => setAttempt("")}>
