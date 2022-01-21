@@ -25,15 +25,25 @@ interface GameProps {
   letters: string[];
 }
 
+const loadData = (key: string) =>
+  JSON.parse(localStorage.getItem(key) || "null") || [];
+
 const Game = function Game({ letters, centerLetter }: GameProps) {
+  const storageKey = `${centerLetter}:${[...letters].sort().join("")}:found`;
+
+  const [found, setFound] = useState<string[]>(loadData(storageKey));
+
+  useEffect(
+    () => {
+      setFound(loadData(storageKey));
+    },
+    [letters, centerLetter]
+  );
+
   const [seed, setSeed] = useState(new Date().toLocaleString("en-US"));
   const randomizer = new Randomizer(seed);
   const orderedLetters = randomizer.shuffleAround(letters, centerLetter);
 
-  const storageKey = `${centerLetter}:${[...letters].sort().join("")}:found`;
-
-  const loadedData = JSON.parse(localStorage.getItem(storageKey) || "null");
-  const [found, setFound] = useState<string[]>(loadedData || []);
   const [attempt, setAttempt] = useState("");
 
   const allWords = dictionary.filter(word => {
@@ -148,8 +158,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
   }
 
   return (
-    <div className="main">
-      <h1>Word Hex</h1>
+    <>
       <div className="attempt">
         {[...attempt].map(letter => (
           <span
@@ -221,7 +230,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
         </div>
       </div>
       <ToastContainer autoClose={2000} position="top-left" />
-    </div>
+    </>
   );
 };
 

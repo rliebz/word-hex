@@ -3,8 +3,8 @@ import seedrandom from "seedrandom";
 export default class Randomizer {
   private random: () => number;
 
-  constructor(seed?: string) {
-    this.random = seedrandom(seed ?? new Date().toLocaleDateString("en-US"));
+  constructor(seed: string) {
+    this.random = seedrandom(seed);
   }
 
   public chooseFrom<T extends any>(list: T[]): T {
@@ -32,13 +32,15 @@ export default class Randomizer {
         continue;
       }
 
-      const centerIndex = Math.floor((shuffled.length - 1)/ 2);
+      const centerIndex = Math.floor((shuffled.length - 1) / 2);
 
       shuffled[i] = shuffled[centerIndex];
       shuffled[centerIndex] = element;
       return shuffled;
     }
 
-    throw new Error(`Element ${element} is not a member of the array to shuffle`);
+    throw new Error(
+      `Element ${element} is not a member of the array to shuffle`
+    );
   }
 }

@@ -11,8 +11,18 @@
   --lowlight-color: #aaa;
 }
 
-.main h1 {
+.nav-bar {
   border-bottom: 2px solid var(--highlight-color);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.nav-bar h1 {
+  margin: 8px 0px;
+  width: 100%;
+  flex-grow: 1;
 }
 
 .attempt {
