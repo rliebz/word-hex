@@ -58,6 +58,8 @@
 }
 
 .hex-grid button {
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.05s ease-out;
   background-color: var(--hex-color);
   border: none;
   color: #000;
@@ -82,6 +84,11 @@
 
 .hex-grid button:nth-child(4) {
   background-color: var(--highlight-color);
+}
+
+.hex-grid button:active {
+  filter: brightness(95%);
+  transform: scale(80%);
 }
 
 .button-group button {
