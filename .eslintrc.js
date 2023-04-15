@@ -2,36 +2,47 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    jest: true
   },
-  extends: ["airbnb", "plugin:react/recommended", "prettier"],
+  extends: [
+    "airbnb",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:vitest/recommended",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 13,
-    sourceType: "module"
+    sourceType: "module",
   },
   settings: {
     "import/resolver": {
       node: {
-        extensions: [".ts", ".tsx"]
-      }
-    }
+        extensions: [".ts", ".tsx"],
+      },
+    },
   },
   ignorePatterns: ["dist/**/*"],
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react", "vitest"],
   rules: {
     "import/extensions": "off",
     "import/no-extraneous-dependencies": [
       "error",
-      { devDependencies: ["**/*.test.ts", "**/*.test.tsx"] }
+      {
+        devDependencies: [
+          "vite.config.ts",
+          "vitest.config.ts",
+          "**/*.test.ts",
+          "**/*.test.tsx",
+        ],
+      },
     ],
     "no-continue": "off",
     "no-nested-ternary": "off",
     "no-restricted-syntax": "off",
     "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [2, { extensions: [".jsx", ".tsx"] }]
-  }
+    "react/jsx-filename-extension": [2, { extensions: [".jsx", ".tsx"] }],
+  },
 };

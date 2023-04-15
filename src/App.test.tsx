@@ -1,10 +1,11 @@
+import { describe, expect, it } from "vitest";
+
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom";
 
 import App from "./App";
 
-describe(App, () => {
+describe("App", () => {
   it("renders", () => {
-    render(<App />);
+    expect(() => render(<App />)).not.toThrow();
   });
 });

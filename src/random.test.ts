@@ -1,6 +1,8 @@
+import { describe, expect, it } from "vitest";
+
 import Randomizer from "./random";
 
-describe(Randomizer, () => {
+describe("Randomizer", () => {
   it("chooses from a list", () => {
     const got = new Set();
     const options = [..."abcdefghijklmnopqrstuvwxyz"];
@@ -42,21 +44,21 @@ describe(Randomizer, () => {
       "a",
       "e",
       "c",
-      "b"
+      "b",
     ]);
     expect(r.shuffleAround(options, "e")).toStrictEqual([
       "a",
       "c",
       "e",
       "b",
-      "d"
+      "d",
     ]);
     expect(r.shuffleAround(options, "e")).toStrictEqual([
       "c",
       "d",
       "e",
       "a",
-      "b"
+      "b",
     ]);
   });
 
