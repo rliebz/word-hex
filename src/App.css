@@ -20,7 +20,7 @@
 }
 
 .nav-bar h1 {
-  margin: 8px 0px;
+  margin: 8px 0;
   width: 100%;
   flex-grow: 1;
 }
@@ -52,6 +52,24 @@
   }
 }
 
+.button-group {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-evenly;
+}
+
+.button-group button {
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-radius: 25px;
+  font-size: 18px;
+  margin: 8px;
+  min-width: 7rem;
+  padding: 12px 18px;
+  transition: all 0.05s ease-out;
+}
+
 .hex-grid {
   height: calc(var(--hex-size) * 3 + var(--hex-margin) * 4);
   width: calc(var(--hex-size) * 3 + var(--hex-margin) * 6);
@@ -59,7 +77,6 @@
 
 .hex-grid button {
   -webkit-tap-highlight-color: transparent;
-  transition: all 0.05s ease-out;
   background-color: var(--hex-color);
   border: none;
   color: #000;
@@ -69,14 +86,16 @@
   height: calc(var(--hex-size) * 1.1547);
   margin: var(--hex-margin);
   margin-bottom: calc(var(--hex-margin) - var(--hex-size) * 0.2885);
-  width: var(--hex-size);
+  transition: all 0.05s ease-out;
   text-transform: uppercase;
+  width: var(--hex-size);
 }
 
 .hex-grid button:nth-child(1),
 .hex-grid button:nth-child(6) {
   margin-left: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
 }
+
 .hex-grid button:nth-child(2),
 .hex-grid button:nth-child(7) {
   margin-right: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
@@ -91,13 +110,12 @@
   transform: scale(80%);
 }
 
-.button-group button {
-  background-color: #fff;
-  border: 1px solid #bbb;
-  border-radius: 25px;
-  font-size: 18px;
-  margin: 8px;
-  padding: 12px 18px;
+.button-group button:hover {
+  background-color: #f6f6f6;
+}
+
+.button-group button:active {
+  transform: scale(90%);
 }
 
 .info-group {

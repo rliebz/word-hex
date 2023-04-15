@@ -170,8 +170,8 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
               letter === centerLetter
                 ? "center-letter"
                 : !letters.includes(letter)
-                ? "bad-letter"
-                : undefined
+                  ? "bad-letter"
+                  : undefined
             }
           >
             {letter}
@@ -192,18 +192,25 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
         ))}
       </div>
       <div className="button-group">
-        <button type="button" onClick={() => setSeed(Math.random().toString())}>
-          Shuffle
-        </button>
-        <button type="button" onClick={() => setAttempt("")}>
-          Clear
-        </button>
-        <button type="button" onClick={() => backspace(attempt)}>
-          Delete
-        </button>
-        <button type="button" onClick={() => submit(attempt)}>
-          Enter
-        </button>
+        <span className="button-group">
+          <button
+            type="button"
+            onClick={() => setSeed(Math.random().toString())}
+          >
+            Shuffle
+          </button>
+          <button type="button" onClick={() => setAttempt("")}>
+            Clear
+          </button>
+        </span>
+        <span className="button-group">
+          <button type="button" onClick={() => backspace(attempt)}>
+            Delete
+          </button>
+          <button type="button" onClick={() => submit(attempt)}>
+            Enter
+          </button>
+        </span>
       </div>
 
       <div>
