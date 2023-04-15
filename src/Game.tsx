@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,7 +18,7 @@ const scoreWord = (word: string): number => {
 };
 
 const scoreWords = (words: string[]): number =>
-  words.map(word => scoreWord(word)).reduce((a, b) => a + b, 0);
+  words.map((word) => scoreWord(word)).reduce((a, b) => a + b, 0);
 
 interface GameProps {
   centerLetter: string;
@@ -29,52 +29,63 @@ const loadData = (key: string) =>
   JSON.parse(localStorage.getItem(key) || "null") || [];
 
 const Game = function Game({ letters, centerLetter }: GameProps) {
-  const storageKey = `${centerLetter}:${[...letters].sort().join("")}:found`;
+  const storageKey = useMemo(
+    () => `${centerLetter}:${[...letters].sort().join("")}:found`,
+    [centerLetter, letters]
+  );
 
   const [found, setFound] = useState<string[]>(loadData(storageKey));
 
-  useEffect(
-    () => {
-      setFound(loadData(storageKey));
-    },
-    [letters, centerLetter]
-  );
+  useEffect(() => {
+    setFound(loadData(storageKey));
+  }, [letters, centerLetter]);
 
   const [seed, setSeed] = useState(new Date().toLocaleString("en-US"));
-  const randomizer = new Randomizer(seed);
-  const orderedLetters = randomizer.shuffleAround(letters, centerLetter);
+
+  const orderedLetters = useMemo(() => {
+    const randomizer = new Randomizer(seed);
+    return randomizer.shuffleAround(letters, centerLetter);
+  }, [centerLetter, letters, seed]);
 
   const [attempt, setAttempt] = useState("");
 
-  const allWords = dictionary.filter(word => {
-    if (word.length < 4) {
-      return false;
-    }
+  const allWords = useMemo(
+    () =>
+      dictionary.filter((word) => {
+        if (word.length < 4) {
+          return false;
+        }
 
-    if (!word.includes(centerLetter)) {
-      return false;
-    }
+        if (!word.includes(centerLetter)) {
+          return false;
+        }
 
-    if ([...word].some(letter => !letters.includes(letter))) {
-      return false;
-    }
+        if ([...word].some((letter) => !letters.includes(letter))) {
+          return false;
+        }
 
-    return true;
-  });
+        return true;
+      }),
+    [centerLetter, letters]
+  );
 
-  const maxScore = scoreWords(allWords);
+  const score = useMemo(() => scoreWords(found), [found]);
+  const maxScore = useMemo(() => scoreWords(allWords), [allWords]);
 
-  const tiers = [
-    { title: "Genius", score: Math.floor(maxScore * 0.7) },
-    { title: "Amazing", score: Math.floor(maxScore * 0.5) },
-    { title: "Great", score: Math.floor(maxScore * 0.4) },
-    { title: "Nice", score: Math.floor(maxScore * 0.25) },
-    { title: "Solid", score: Math.floor(maxScore * 0.15) },
-    { title: "Good", score: Math.floor(maxScore * 0.08) },
-    { title: "Moving Up", score: Math.floor(maxScore * 0.05) },
-    { title: "Good Start", score: Math.floor(maxScore * 0.02) },
-    { title: "Beginner", score: 0 }
-  ];
+  const tiers = useMemo(
+    () => [
+      { title: "Genius", score: Math.floor(maxScore * 0.7) },
+      { title: "Amazing", score: Math.floor(maxScore * 0.5) },
+      { title: "Great", score: Math.floor(maxScore * 0.4) },
+      { title: "Nice", score: Math.floor(maxScore * 0.25) },
+      { title: "Solid", score: Math.floor(maxScore * 0.15) },
+      { title: "Good", score: Math.floor(maxScore * 0.08) },
+      { title: "Moving Up", score: Math.floor(maxScore * 0.05) },
+      { title: "Good Start", score: Math.floor(maxScore * 0.02) },
+      { title: "Beginner", score: 0 },
+    ],
+    [maxScore]
+  );
 
   const backspace = (word: string) =>
     setAttempt(word.slice(0, word.length - 1));
@@ -99,7 +110,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
       return;
     }
 
-    if ([...word].some(letter => !letters.includes(letter))) {
+    if ([...word].some((letter) => !letters.includes(letter))) {
       throwError("Bad letters");
       return;
     }
@@ -119,48 +130,40 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
     localStorage.setItem(storageKey, JSON.stringify(newlyFound));
   };
 
-  useEffect(
-    () => {
-      const handleKeydown = (event: KeyboardEvent) => {
-        if (event.metaKey || event.altKey || event.shiftKey || event.ctrlKey) {
-          return;
-        }
+  useEffect(() => {
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.altKey || event.shiftKey || event.ctrlKey) {
+        return;
+      }
 
-        event.preventDefault();
+      event.preventDefault();
 
-        if (event.key === "Enter") {
-          submit(attempt);
-          return;
-        }
+      if (event.key === "Enter") {
+        submit(attempt);
+        return;
+      }
 
-        if (event.key === "Backspace") {
-          backspace(attempt);
-          return;
-        }
+      if (event.key === "Backspace") {
+        backspace(attempt);
+        return;
+      }
 
-        setAttempt(attempt + event.key);
-      };
+      setAttempt(attempt + event.key);
+    };
 
-      document.addEventListener("keydown", handleKeydown);
-      return () => document.removeEventListener("keydown", handleKeydown);
-    },
-    [attempt]
+    document.addEventListener("keydown", handleKeydown);
+    return () => document.removeEventListener("keydown", handleKeydown);
+  }, [attempt]);
+
+  const title = useMemo(
+    () => tiers.find((tier) => score >= tier.score)!.title,
+    [tiers, score]
   );
-
-  const score = scoreWords(found);
-
-  let title = "Beginner";
-  for (const tier of tiers) {
-    if (score >= tier.score) {
-      title = tier.title;
-      break;
-    }
-  }
 
   return (
     <>
       <div className="attempt">
-        {[...attempt].map(letter => (
+        {[...attempt].map((letter) => (
           <span
             key={letter}
             className={
@@ -178,7 +181,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
       </div>
 
       <div className="hex-grid">
-        {orderedLetters.map(letter => (
+        {orderedLetters.map((letter) => (
           <button
             type="button"
             key={letter}
@@ -210,7 +213,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
       <div className="info-group">
         <div>
           <ul>
-            {[...tiers].reverse().map(tier => (
+            {[...tiers].reverse().map((tier) => (
               <li
                 key={tier.title}
                 className={score >= tier.score ? "achieved" : "unachieved"}
@@ -223,7 +226,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
 
         <div>
           <ul>
-            {[...found].sort().map(word => (
+            {[...found].sort().map((word) => (
               <li key={word}>{word}</li>
             ))}
           </ul>
