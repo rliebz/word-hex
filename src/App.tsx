@@ -34,8 +34,9 @@ const App = function App() {
           type="date"
           value={dateAsYYYYMMDD(date)}
           onChange={(e) => {
-            if (e.target.valueAsDate) {
-              setDate(e.target.valueAsDate);
+            const selectedDate = e.target.valueAsDate;
+            if (selectedDate && !Number.isNaN(selectedDate.getTime())) {
+              setDate(selectedDate);
             }
           }}
         />
