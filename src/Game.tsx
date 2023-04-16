@@ -17,6 +17,8 @@ const scoreWord = (word: string): number => {
   return word.length;
 };
 
+const alphabet = [..."abcdefghijklmnopqrstuvwxyz"];
+
 const scoreWords = (words: string[]): number =>
   words.map((word) => scoreWord(word)).reduce((a, b) => a + b, 0);
 
@@ -148,6 +150,10 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
         return;
       }
 
+      if (!alphabet.includes(event.key)) {
+        return;
+      }
+
       setAttempt(attempt + event.key);
     };
 
@@ -163,9 +169,11 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
   return (
     <>
       <div className="attempt">
-        {[...attempt].map((letter) => (
+        {[...attempt].map((letter, i) => (
           <span
-            key={letter}
+            // The order never changes, so indexes are semantic and appropriate.
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
             className={
               letter === centerLetter
                 ? "center-letter"
