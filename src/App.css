@@ -11,6 +11,14 @@
   --lowlight-color: #aaa;
 }
 
+input[type="date"] {
+  border: 2px solid #bbb;
+  border-radius: 25px;
+  height: 2rem;
+  margin: 8px 0;
+  min-width: 7.5rem;
+}
+
 .nav-bar {
   border-bottom: 2px solid var(--highlight-color);
   display: flex;

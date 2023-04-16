@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import Game from "./Game";
 import dictionary from "./dictionary";
@@ -17,20 +17,28 @@ const gameStateFromSeed = (seed: string): [string[], string] => {
   return [letters, centerLetter];
 };
 
-const App = function App() {
-  // TODO: Allow dates to be set
-  const [date] = useState(new Date());
-  const [todaysLetters, todaysCenterLetter] = gameStateFromSeed(
-    date.toLocaleDateString("en-US")
-  );
+const dateAsYYYYMMDD = (date: Date): string => date.toISOString().slice(0, 10);
 
-  const [letters] = useState(todaysLetters);
-  const [centerLetter] = useState(todaysCenterLetter);
+const App = function App() {
+  const [date, setDate] = useState(new Date());
+  const [letters, centerLetter] = useMemo(
+    () => gameStateFromSeed(dateAsYYYYMMDD(date)),
+    [date]
+  );
 
   return (
     <div className="main">
       <div className="nav-bar">
         <h1>Word Hex</h1>
+        <input
+          type="date"
+          value={dateAsYYYYMMDD(date)}
+          onChange={(e) => {
+            if (e.target.valueAsDate) {
+              setDate(e.target.valueAsDate);
+            }
+          }}
+        />
       </div>
       <Game letters={letters} centerLetter={centerLetter} />
     </div>
