@@ -17,7 +17,7 @@ const scoreWord = (word: string): number => {
   return word.length;
 };
 
-const alphabet = [..."abcdefghijklmnopqrstuvwxyz"];
+const alphabet = new Set([..."abcdefghijklmnopqrstuvwxyz"]);
 
 const scoreWords = (words: string[]): number =>
   words.map((word) => scoreWord(word)).reduce((a, b) => a + b, 0);
@@ -127,7 +127,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
       { type: "success" }
     );
 
-    const newlyFound = [...found, word];
+    const newlyFound = [...found, word].sort();
     setFound(newlyFound);
     localStorage.setItem(storageKey, JSON.stringify(newlyFound));
   };
@@ -138,22 +138,23 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
         return;
       }
 
-      event.preventDefault();
-
       if (event.key === "Enter") {
+        event.preventDefault();
         submit(attempt);
         return;
       }
 
       if (event.key === "Backspace") {
+        event.preventDefault();
         backspace(attempt);
         return;
       }
 
-      if (!alphabet.includes(event.key)) {
+      if (!alphabet.has(event.key)) {
         return;
       }
 
+      event.preventDefault();
       setAttempt(attempt + event.key);
     };
 
@@ -241,7 +242,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
 
         <div>
           <ul>
-            {[...found].sort().map((word) => (
+            {found.map((word) => (
               <li key={word}>{word}</li>
             ))}
           </ul>
