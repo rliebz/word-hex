@@ -7,11 +7,11 @@ export default class Randomizer {
     this.random = seedrandom(seed);
   }
 
-  public chooseFrom<T extends any>(list: T[]): T {
+  public chooseFrom<T>(list: T[]): T {
     return list[Math.floor(this.random() * list.length)];
   }
 
-  public shuffle<T extends any>(list: Iterable<T>): T[] {
+  public shuffle<T>(list: Iterable<T>): T[] {
     const output = [...list];
 
     for (let i = output.length - 1; i >= 0; i -= 1) {
@@ -24,7 +24,7 @@ export default class Randomizer {
     return output;
   }
 
-  public shuffleAround<T extends any>(list: Iterable<T>, element: T): T[] {
+  public shuffleAround<T>(list: Iterable<T>, element: T): T[] {
     const shuffled = this.shuffle(list);
 
     for (let i = 0; i < shuffled.length; i += 1) {
@@ -40,7 +40,7 @@ export default class Randomizer {
     }
 
     throw new Error(
-      `Element ${element} is not a member of the array to shuffle`
+      `Element ${element} is not a member of the array to shuffle`,
     );
   }
 }

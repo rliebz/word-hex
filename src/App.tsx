@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import dictionary from "./dictionary";
 import Game, { findWords, scoreWords } from "./Game";
+import dictionary from "./dictionary";
 import Randomizer from "./random";
 
 import "./App.css";
@@ -36,7 +36,7 @@ const gameStateFromSeed = (seed: string): [string[], string] => {
     {
       letter: "",
       score: Number.MAX_SAFE_INTEGER,
-    }
+    },
   );
 
   return [letters, lowest.letter];
@@ -48,7 +48,7 @@ const App = function App() {
   const [date, setDate] = useState(new Date());
   const [letters, centerLetter] = useMemo(
     () => gameStateFromSeed(dateAsYYYYMMDD(date)),
-    [date]
+    [date],
   );
 
   return (

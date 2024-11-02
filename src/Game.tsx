@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -52,14 +52,14 @@ const loadData = (key: string) =>
 const Game = function Game({ letters, centerLetter }: GameProps) {
   const storageKey = useMemo(
     () => `${centerLetter}:${[...letters].sort().join("")}:found`,
-    [centerLetter, letters]
+    [centerLetter, letters],
   );
 
   const [found, setFound] = useState<string[]>(loadData(storageKey));
 
   useEffect(() => {
     setFound(loadData(storageKey));
-  }, [letters, centerLetter]);
+  }, [storageKey]);
 
   const [seed, setSeed] = useState(new Date().toLocaleString("en-US"));
 
@@ -72,7 +72,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
 
   const allWords = useMemo(
     () => findWords({ centerLetter, letters }),
-    [centerLetter, letters]
+    [centerLetter, letters],
   );
 
   const score = useMemo(() => scoreWords(found), [found]);
@@ -90,51 +90,56 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
       { title: "Good Start", score: Math.floor(maxScore * 0.02) },
       { title: "Beginner", score: 0 },
     ],
-    [maxScore]
+    [maxScore],
   );
 
-  const backspace = (word: string) =>
-    setAttempt(word.slice(0, word.length - 1));
+  const backspace = useCallback(
+    (word: string) => setAttempt(word.slice(0, word.length - 1)),
+    [],
+  );
 
-  const submit = (word: string) => {
-    setAttempt("");
+  const submit = useCallback(
+    (word: string) => {
+      setAttempt("");
 
-    const throwError = (message: string) => toast(message, { type: "error" });
+      const throwError = (message: string) => toast(message, { type: "error" });
 
-    if (word.length < 4) {
-      throwError("Too short");
-      return;
-    }
+      if (word.length < 4) {
+        throwError("Too short");
+        return;
+      }
 
-    if (!word.includes(centerLetter)) {
-      throwError("Missing center letter");
-      return;
-    }
+      if (!word.includes(centerLetter)) {
+        throwError("Missing center letter");
+        return;
+      }
 
-    if (found.includes(word)) {
-      throwError("Already found");
-      return;
-    }
+      if (found.includes(word)) {
+        throwError("Already found");
+        return;
+      }
 
-    if ([...word].some((letter) => !letters.includes(letter))) {
-      throwError("Bad letters");
-      return;
-    }
+      if ([...word].some((letter) => !letters.includes(letter))) {
+        throwError("Bad letters");
+        return;
+      }
 
-    if (!dictionary.includes(word)) {
-      throwError("Not a word");
-      return;
-    }
+      if (!dictionary.includes(word)) {
+        throwError("Not a word");
+        return;
+      }
 
-    toast(
-      `${new Set(word).size === 7 ? "Pangram! " : ""}+${scoreWord(word)}!`,
-      { type: "success" }
-    );
+      toast(
+        `${new Set(word).size === 7 ? "Pangram! " : ""}+${scoreWord(word)}!`,
+        { type: "success" },
+      );
 
-    const newlyFound = [...found, word].sort();
-    setFound(newlyFound);
-    localStorage.setItem(storageKey, JSON.stringify(newlyFound));
-  };
+      const newlyFound = [...found, word].sort();
+      setFound(newlyFound);
+      localStorage.setItem(storageKey, JSON.stringify(newlyFound));
+    },
+    [centerLetter, letters, found, storageKey],
+  );
 
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
@@ -164,11 +169,11 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
 
     document.addEventListener("keydown", handleKeydown);
     return () => document.removeEventListener("keydown", handleKeydown);
-  }, [attempt]);
+  }, [attempt, backspace, submit]);
 
   const title = useMemo(
-    () => tiers.find((tier) => score >= tier.score)!.title,
-    [tiers, score]
+    () => tiers.find((tier) => score >= tier.score)?.title ?? "",
+    [tiers, score],
   );
 
   return (
@@ -176,15 +181,15 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
       <div className="attempt">
         {[...attempt].map((letter, i) => (
           <span
-            // The order never changes, so indexes are semantic and appropriate.
-            // eslint-disable-next-line react/no-array-index-key
+            /* biome-ignore lint/suspicious/noArrayIndexKey: The order never changes, so
+             * indexes are semantic and appropriate. */
             key={i}
             className={
               letter === centerLetter
                 ? "center-letter"
                 : !letters.includes(letter)
-                ? "bad-letter"
-                : undefined
+                  ? "bad-letter"
+                  : undefined
             }
           >
             {letter}
