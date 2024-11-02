@@ -67,7 +67,7 @@ describe("Randomizer", () => {
 
     const r = new Randomizer("seed");
     expect(() => r.shuffleAround(options, "j")).toThrow(
-      new Error("Element j is not a member of the array to shuffle")
+      new Error("Element j is not a member of the array to shuffle"),
     );
   });
 });

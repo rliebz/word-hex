@@ -19,7 +19,26 @@ const scoreWord = (word: string): number => {
 
 const alphabet = new Set([..."abcdefghijklmnopqrstuvwxyz"]);
 
-const scoreWords = (words: string[]): number =>
+export const findWords = ({
+  letters,
+  centerLetter,
+}: {
+  letters: string[];
+  centerLetter?: string;
+}) =>
+  dictionary.filter((word) => {
+    if (centerLetter && !word.includes(centerLetter)) {
+      return false;
+    }
+
+    if ([...new Set(word)].some((letter) => !letters.includes(letter))) {
+      return false;
+    }
+
+    return true;
+  });
+
+export const scoreWords = (words: string[]): number =>
   words.map((word) => scoreWord(word)).reduce((a, b) => a + b, 0);
 
 interface GameProps {
@@ -52,22 +71,7 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
   const [attempt, setAttempt] = useState("");
 
   const allWords = useMemo(
-    () =>
-      dictionary.filter((word) => {
-        if (word.length < 4) {
-          return false;
-        }
-
-        if (!word.includes(centerLetter)) {
-          return false;
-        }
-
-        if ([...word].some((letter) => !letters.includes(letter))) {
-          return false;
-        }
-
-        return true;
-      }),
+    () => findWords({ centerLetter, letters }),
     [centerLetter, letters]
   );
 
@@ -179,8 +183,8 @@ const Game = function Game({ letters, centerLetter }: GameProps) {
               letter === centerLetter
                 ? "center-letter"
                 : !letters.includes(letter)
-                  ? "bad-letter"
-                  : undefined
+                ? "bad-letter"
+                : undefined
             }
           >
             {letter}

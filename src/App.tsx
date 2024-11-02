@@ -1,20 +1,45 @@
 import { useMemo, useState } from "react";
 
-import Game from "./Game";
 import dictionary from "./dictionary";
+import Game, { findWords, scoreWords } from "./Game";
 import Randomizer from "./random";
 
 import "./App.css";
 
-const allPangrams = dictionary.filter((word) => new Set(word).size === 7);
+const allPangrams = dictionary.filter((word) => {
+  if (["ing", "ed", "tion"].some((suffix) => word.endsWith(suffix))) {
+    return false;
+  }
+
+  const set = new Set(word);
+  return set.size === 7; // && findWords({ letters: [...set] }).length < 80;
+});
 
 const gameStateFromSeed = (seed: string): [string[], string] => {
   const randomizer = new Randomizer(seed);
   const pangram = randomizer.chooseFrom(allPangrams);
   const letters = randomizer.shuffle(new Set(pangram));
-  const centerLetter = randomizer.chooseFrom(letters);
 
-  return [letters, centerLetter];
+  const lowest = letters.reduce(
+    (acc, letter) => {
+      const allWords = findWords({ letters, centerLetter: letter });
+      const score = scoreWords(allWords);
+      if (score < acc.score) {
+        return {
+          letter,
+          score,
+        };
+      }
+
+      return acc;
+    },
+    {
+      letter: "",
+      score: Number.MAX_SAFE_INTEGER,
+    }
+  );
+
+  return [letters, lowest.letter];
 };
 
 const dateAsYYYYMMDD = (date: Date): string => date.toISOString().slice(0, 10);
