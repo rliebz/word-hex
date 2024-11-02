@@ -11,16 +11,10 @@
   },
   "css": {
     "formatter": {
-      "enabled": true,
-      "indentStyle": "space"
+      "enabled": true
     },
     "linter": {
       "enabled": true
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "indentStyle": "space"
     }
   },
   "json": {

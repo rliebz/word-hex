@@ -1,140 +1,140 @@
 .main {
-  font-family: "Trebuchet MS", sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	font-family: "Trebuchet MS", sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-  --hex-size: 100px;
-  --hex-margin: 4px;
-  --hex-color: #ddd;
-  --highlight-color: #fc0;
-  --lowlight-color: #aaa;
+	--hex-size: 100px;
+	--hex-margin: 4px;
+	--hex-color: #ddd;
+	--highlight-color: #fc0;
+	--lowlight-color: #aaa;
 }
 
 input[type="date"] {
-  border: 2px solid #bbb;
-  border-radius: 25px;
-  height: 2rem;
-  margin: 8px 0;
-  min-width: 7.5rem;
+	border: 2px solid #bbb;
+	border-radius: 25px;
+	height: 2rem;
+	margin: 8px 0;
+	min-width: 7.5rem;
 }
 
 .nav-bar {
-  border-bottom: 2px solid var(--highlight-color);
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  width: 100%;
+	border-bottom: 2px solid var(--highlight-color);
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+	width: 100%;
 }
 
 .nav-bar h1 {
-  margin: 8px 0;
-  width: 100%;
-  flex-grow: 1;
+	margin: 8px 0;
+	width: 100%;
+	flex-grow: 1;
 }
 
 .attempt {
-  font-size: 32px;
-  font-weight: bolder;
-  margin-bottom: 16px;
-  text-transform: uppercase;
+	font-size: 32px;
+	font-weight: bolder;
+	margin-bottom: 16px;
+	text-transform: uppercase;
 }
 
 .center-letter {
-  color: var(--highlight-color);
+	color: var(--highlight-color);
 }
 
 .bad-letter {
-  color: var(--lowlight-color);
+	color: var(--lowlight-color);
 }
 
 .blinker {
-  font-size: 32px;
-  color: var(--highlight-color);
-  animation: blinker 1s step-start infinite;
+	font-size: 32px;
+	color: var(--highlight-color);
+	animation: blinker 1s step-start infinite;
 }
 
 @keyframes blinker {
-  50% {
-    opacity: 0;
-  }
+	50% {
+		opacity: 0;
+	}
 }
 
 .button-group {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap-reverse;
-  justify-content: space-evenly;
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap-reverse;
+	justify-content: space-evenly;
 }
 
 .button-group button {
-  background-color: #fff;
-  border: 1px solid #bbb;
-  border-radius: 25px;
-  font-size: 18px;
-  margin: 8px;
-  min-width: 7rem;
-  padding: 12px 18px;
-  transition: all 0.05s ease-out;
+	background-color: #fff;
+	border: 1px solid #bbb;
+	border-radius: 25px;
+	font-size: 18px;
+	margin: 8px;
+	min-width: 7rem;
+	padding: 12px 18px;
+	transition: all 0.05s ease-out;
 }
 
 .hex-grid {
-  height: calc(var(--hex-size) * 3 + var(--hex-margin) * 4);
-  width: calc(var(--hex-size) * 3 + var(--hex-margin) * 6);
+	height: calc(var(--hex-size) * 3 + var(--hex-margin) * 4);
+	width: calc(var(--hex-size) * 3 + var(--hex-margin) * 6);
 }
 
 .hex-grid button {
-  -webkit-tap-highlight-color: transparent;
-  background-color: var(--hex-color);
-  border: none;
-  color: #000;
-  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-  font-size: 32px;
-  font-weight: bolder;
-  height: calc(var(--hex-size) * 1.1547);
-  margin: var(--hex-margin);
-  margin-bottom: calc(var(--hex-margin) - var(--hex-size) * 0.2885);
-  transition: transform 0.05s ease-out;
-  text-transform: uppercase;
-  width: var(--hex-size);
+	-webkit-tap-highlight-color: transparent;
+	background-color: var(--hex-color);
+	border: none;
+	color: #000;
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+	font-size: 32px;
+	font-weight: bolder;
+	height: calc(var(--hex-size) * 1.1547);
+	margin: var(--hex-margin);
+	margin-bottom: calc(var(--hex-margin) - var(--hex-size) * 0.2885);
+	transition: transform 0.05s ease-out;
+	text-transform: uppercase;
+	width: var(--hex-size);
 }
 
 .hex-grid button:nth-child(1),
 .hex-grid button:nth-child(6) {
-  margin-left: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
+	margin-left: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
 }
 
 .hex-grid button:nth-child(2),
 .hex-grid button:nth-child(7) {
-  margin-right: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
+	margin-right: calc(var(--hex-size) / 2 + var(--hex-margin) * 2);
 }
 
 .hex-grid button:nth-child(4) {
-  background-color: var(--highlight-color);
+	background-color: var(--highlight-color);
 }
 
 .hex-grid button:active {
-  filter: brightness(95%);
-  transform: scale(80%);
+	filter: brightness(95%);
+	transform: scale(80%);
 }
 
 .button-group button:hover {
-  background-color: #f6f6f6;
+	background-color: #f6f6f6;
 }
 
 .button-group button:active {
-  transform: scale(90%);
+	transform: scale(90%);
 }
 
 .info-group {
-  display: flex;
-  text-align: left;
+	display: flex;
+	text-align: left;
 }
 
 .achieved {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .unachieved {
-  color: var(--lowlight-color);
+	color: var(--lowlight-color);
 }
