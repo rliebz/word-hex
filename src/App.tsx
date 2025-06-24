@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
-
-import Game, { findWords, scoreWords } from "./Game";
 import dictionary from "./dictionary";
+import Game, { findWords, scoreWords } from "./Game";
 import Randomizer from "./random";
 
 import "./App.css";
